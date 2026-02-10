@@ -2,11 +2,30 @@
 
 import sys
 from llama_cpp import Llama
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--input', type=str, required=False, help="Path to the article .txt file to process")
+args = parser.parse_args()
+
 
 article_content = open("articles/32868913-Hartmann et al. 2020.xml").read()
 model_path = "models/Qwen3-8B-Q4_K_M.gguf"
 prompt = (
     "You will read this article and identify what kind of \"database\" is lacking in the current (the time at which the article is written) lacks. What kind of public database would be helpful to the author throughout their studies. Answer a list of idea in a json format."
+    "The JSON MUST follow the following format exactly (no extra text, no deviation):\n"
+    "{\n"
+    '  "missing_databases": [\n'
+    '    {\n'
+    '      "name": "Potential name of the missing database",\n'
+    '      "description": "A brief description of the database and why it is needed"\n'
+    '    },\n'
+    '    {\n'
+    '      "name": "Another missing database",\n'
+    '      "description": "A brief description of this database and why it is needed"\n'
+    '    }\n'
+    '  ]\n'
+    "}\n"
     "\n\nArticle:\n"
     f"{article_content}\n\n"
 )
