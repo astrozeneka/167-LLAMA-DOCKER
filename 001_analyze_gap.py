@@ -35,8 +35,10 @@ print(f"Loading model: {model_path}")
 llm = Llama(
     model_path=model_path,
     n_ctx=0,
-    n_threads=8,
+    n_threads=os.cpu_count() - 1,
+    n_batch=512,
     verbose=False,
+    use_mmap=True,
     chat_format="chatml"  # Qwen uses ChatML format
 )
 
