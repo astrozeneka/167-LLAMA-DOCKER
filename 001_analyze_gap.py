@@ -14,7 +14,7 @@ prompt = (
 print(f"Loading model: {model_path}")
 llm = Llama(
     model_path=model_path,
-    n_ctx=4096,
+    n_ctx=0,
     n_threads=8,
     verbose=False,
     chat_format="chatml"  # Qwen uses ChatML format
@@ -29,7 +29,7 @@ if __name__ == '__main__':
             {"role": "system", "content": "You are a helpful assistant. You will answer briefly without extra unnecessary verbosity."},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=4096,
+        max_tokens=10000,
         temperature=0.7
     )
 
