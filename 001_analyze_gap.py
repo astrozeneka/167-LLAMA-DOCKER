@@ -3,6 +3,7 @@
 import sys
 from llama_cpp import Llama
 import argparse
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', type=str, required=False, help="Path to the article .txt file to process")
@@ -41,6 +42,8 @@ llm = Llama(
 
 if __name__ == '__main__':
     print(f"Prompt: {prompt}")
+    basename = os.path.basename(args.input) if args.input else "default_input"
+    outfile_name = f"nlp_outputs/{basename}.txt"
 
     # Use create_chat_completion instead of __call__
     response = llm.create_chat_completion(
@@ -53,4 +56,8 @@ if __name__ == '__main__':
     )
 
     print(f"Response: {response['choices'][0]['message']['content']}")
-    print("Done.")
+
+    os.makedir("nlp_outputs", exist_ok=True)
+    with open(outfile_name, 'w') as f:
+        f.write(response['choices'][0]['message']['content'])
+    print(f"Saved output to {outfile_name}")
